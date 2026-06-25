@@ -533,15 +533,16 @@ namespace Lab7
                 new("Орлов", "Илья", 12, 100)
             ];
 
-            using StreamWriter writer = new StreamWriter(fileName);
-
-            foreach (Student student in students)
+            using (StreamWriter writer = new StreamWriter(fileName))
             {
-                writer.WriteLine(
-                    $"{student.LastName} " +
-                    $"{student.FirstName} " +
-                    $"{student.School} " +
-                    $"{student.Score}");
+                foreach (Student student in students)
+                {
+                    writer.WriteLine(
+                        $"{student.LastName} " +
+                        $"{student.FirstName} " +
+                        $"{student.School} " +
+                        $"{student.Score}");
+                }
             }
         }
         public static List<Student> ReadStudentsFile(string fileName)
