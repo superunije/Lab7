@@ -18,6 +18,7 @@ namespace Lab7
                 Console.WriteLine("Ошибка ввода. Введите положительное целое число.");
             }
         }
+
         static void PrintFile(string fileName)
         {
             if (!File.Exists(fileName))
