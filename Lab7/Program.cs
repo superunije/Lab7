@@ -1,4 +1,5 @@
-﻿using static System.Net.Mime.MediaTypeNames;
+﻿using System.Xml.Serialization;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Lab7
 {
@@ -25,14 +26,74 @@ namespace Lab7
                 return;
             }
 
-            Console.WriteLine($"\nСодержимое файла {fileName}:");
+            Console.WriteLine($"Содержимое файла {fileName}:");
 
             Console.WriteLine(File.ReadAllText(fileName));
         }
 
+        public static void PrintFileXmlToys(string fileName)
+        {
+            Console.WriteLine($"Содержимое файла {fileName}:");
+
+            XmlSerializer serializer =
+                new XmlSerializer(typeof(List<Toy>));
+
+            using (FileStream fileStream = new FileStream(
+                fileName,
+                FileMode.Open,
+                FileAccess.Read))
+            {
+                List<Toy>? toys =
+                    serializer.Deserialize(fileStream)
+                    as List<Toy>;
+
+                if (toys is null)
+                {
+                    return;
+                }
+
+                foreach (Toy toy in toys)
+                {
+                    Console.WriteLine(
+                        $"Название: {toy.Name}, " +
+                        $"Цена: {toy.Price} руб., " +
+                        $"Возраст: от {toy.MinAge} до {toy.MaxAge} лет");
+                }
+            }
+        }
+
+        public static void PrintFileStudents(string fileName)
+        {
+            if (!File.Exists(fileName))
+            {
+                Console.WriteLine("Файл не найден.");
+                return;
+            }
+
+            Console.WriteLine($"Содержимое файла {fileName}:");
+
+            foreach (string line in File.ReadLines(fileName))
+            {
+                string[] parts = line.Split(' ');
+
+                Student student = new Student(
+                    parts[0],
+                    parts[1],
+                    int.Parse(parts[2]),
+                    int.Parse(parts[3]));
+
+                Console.WriteLine(
+                    $"{student.LastName} " +
+                    $"{student.FirstName}, " +
+                    $"школа №{student.School}, " +
+                    $"балл: {student.Score}");
+            }
+        }
 
         public static void PrintFileBinary(string fileName)
         {
+            Console.WriteLine($"Содержимое файла {fileName}:");
+
             using (FileStream fileStream = new FileStream(
                 fileName,
                 FileMode.Open,
@@ -55,30 +116,28 @@ namespace Lab7
             const string BinaryPath = "binary.dat";
             const string ResultPath = "result.txt";
             const string ToysPath = "toys.xml";
+            const string StudentsPath = "students.txt";
 
             while (true)
             {
                 Console.WriteLine("\n\n--- Задание 1");
-                Console.WriteLine("1. Создать файлы");
-                Console.WriteLine("2. Получить новый файл, уменьшив каждый элемент исходного на 1.");
-                Console.WriteLine("3. Просмотр содержимого файлов");
-
+                Console.WriteLine("1. Получить новый файл, уменьшив каждый элемент исходного на 1.");
                 Console.WriteLine("--- Задание 2");
-                Console.WriteLine("4. Найти разность первого и максимального элементов в файле.");
+                Console.WriteLine("2. Найти разность первого и максимального элементов в файле.");
                 Console.WriteLine("--- Задание 3");
-                Console.WriteLine("5. Переписать в другой файл строки, начинающиеся с буквы б");
+                Console.WriteLine("3. Переписать в другой файл строки, начинающиеся с буквы б");
                 Console.WriteLine("--- Задание 4");
-                Console.WriteLine("6. Найти разность первого и максимального элементов файла");
+                Console.WriteLine("4. Найти разность первого и максимального элементов файла");
                 Console.WriteLine("--- Задание 5");
-                Console.WriteLine("7. Определить стоимость кукол для детей шести лет");
+                Console.WriteLine("5. Определить стоимость кукол для детей шести лет");
                 Console.WriteLine("--- Задание 6");
-                Console.WriteLine("8. Оставить в списке только первые вхождения одинаковых элементов");
+                Console.WriteLine("6. Оставить в списке только первые вхождения одинаковых элементов");
                 Console.WriteLine("--- Задание 7");
-                Console.WriteLine("9. Если у элемента со значением E \"соседи\" не равны, поменять их местами");
+                Console.WriteLine("7. Если у элемента со значением E \"соседи\" не равны, поменять их местами");
                 Console.WriteLine("--- Задание 8");
-                Console.WriteLine("10. Задание с работниками фирмы");
+                Console.WriteLine("8. Задание с работниками фирмы");
                 Console.WriteLine("--- Задание 9");
-                Console.WriteLine("11. Определить с каких букв начинаются слова");
+                Console.WriteLine("9. Задание со студентами");
                 Console.WriteLine("0. Выход");
 
                 var choice = ReadInt("Выбор: ", true);
@@ -87,52 +146,50 @@ namespace Lab7
                 {
                     case 1:
                         Worker.FillFileNumbers(NumbersPath, 20);
-                        Worker.FillFileText(TextPath, 20);
-                        Worker.FillFileBinary(BinaryPath, 20);
-                        Worker.FillFileXML(ToysPath);
+
+                        Worker.DecreaseByOne(NumbersPath, ResultPath);
+
+                        Console.WriteLine("\nИзначальный файл");
+                        PrintFile(NumbersPath);
+                        Console.WriteLine("\nИзменённый файл");
+                        PrintFile(ResultPath);
 
                         break;
                     case 2:
-                        Worker.DecreaseByOne(NumbersPath, ResultPath);
+                        Worker.FillFileNumbers(NumbersPath, 20);
+                        PrintFile(NumbersPath);
 
-                        break;
-                    case 3:
-                        try
-                        {
-                            Console.WriteLine("Просмотр файлов numbers.txt, result.txt: ");
-
-                            PrintFile(NumbersPath);
-                            PrintFile(TextPath);
-                            PrintFileBinary(BinaryPath);
-                            PrintFile(ResultPath);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine($"Ошибка: {e.Message}");
-                        }
-
-                        break;
-                    case 4:
+                        Console.WriteLine("Разность первого и максимального числа равна:");
                         Console.WriteLine(Worker.DifferenceFirstAndMax(NumbersPath));
 
                         break;
-                    case 5:
+                    case 3:
+                        Worker.FillFileText(TextPath, 20);
+
                         Worker.CopyLinesStartingWithB(TextPath, ResultPath);
+
+                        PrintFile(TextPath);
+                        PrintFile(ResultPath);
+
+                        break;
+                    case 4:
+                        Worker.FillFileBinary(BinaryPath, 20);
+                        PrintFileBinary(BinaryPath);
+
+                        Console.WriteLine("Разность первого и максимального числа равна:");
+                        Console.WriteLine(Worker.BinaryDifferenceFirstAndMax(BinaryPath));
+
+                        break;
+                    case 5:
+                        Worker.FillFileXML(ToysPath);
+                        PrintFileXmlToys(ToysPath);
+
+                        Console.WriteLine(
+                            $"\nСтоимость кукол для детей 6 лет: " +
+                            $"{Worker.GetDollsCostForSixYears(ToysPath)} руб.");
 
                         break;
                     case 6:
-                        Worker.BinaryDifferenceFirstAndMax(BinaryPath);
-
-                        break;
-                    case 7:
-                        decimal cost =
-                            Worker.GetDollsCostForSixYears(ToysPath);
-
-                        Console.WriteLine(
-                            $"Стоимость кукол для детей 6 лет: {cost} руб.");
-
-                        break;
-                    case 8:
                         List<int> list1 = Worker.CreateList(10);
 
                         Console.WriteLine("Исходный список:");
@@ -144,7 +201,7 @@ namespace Lab7
                         Worker.PrintList(list1);
 
                         break;
-                    case 9:
+                    case 7:
                         LinkedList<int> list2 = Worker.CreateLinkedList(10);
 
                         Console.WriteLine("Исходный список:");
@@ -157,18 +214,20 @@ namespace Lab7
                         Worker.PrintList(list2);
 
                         break;
-                    case 10:
+                    case 8:
+                        
+
                         Worker.PrintHashSetAnswers();
 
                         break;
-                    case 11:
-                        string fileName = "students.txt";
-
-                        Worker.GenerateStudentsFile(fileName);
+                    case 9:
+                        Worker.GenerateStudentsFile(StudentsPath);
+                        PrintFileStudents(StudentsPath);
 
                         List<Student> students =
-                            Worker.ReadStudentsFile(fileName);
+                            Worker.ReadStudentsFile(StudentsPath);
 
+                        Console.WriteLine();
                         Worker.ProcessSchool50(students);
 
                         break;

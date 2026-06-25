@@ -538,9 +538,9 @@ namespace Lab7
             foreach (Student student in students)
             {
                 writer.WriteLine(
-                    $"{student.LastName};" +
-                    $"{student.FirstName};" +
-                    $"{student.School};" +
+                    $"{student.LastName} " +
+                    $"{student.FirstName} " +
+                    $"{student.School} " +
                     $"{student.Score}");
             }
         }
@@ -550,7 +550,7 @@ namespace Lab7
 
             foreach (string line in File.ReadLines(fileName))
             {
-                string[] parts = line.Split(';');
+                string[] parts = line.Split(' ');
 
                 students.Add(
                     new Student(
