@@ -226,7 +226,7 @@ namespace Lab7
                         List<Student> students =
                             Worker.ReadStudentsFile(StudentsPath);
 
-                        Console.WriteLine();
+                        Console.WriteLine("\nСтуденты с высшим баллом:");
                         Worker.ProcessSchool50(students);
 
                         break;
