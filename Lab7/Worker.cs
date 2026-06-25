@@ -390,6 +390,7 @@ namespace Lab7
 
             return result;
         }
+
         public static HashSet<string> GetKnownByNobody(
             HashSet<string> allLanguages,
             HashSet<string> knownByAtLeastOne)
@@ -545,6 +546,7 @@ namespace Lab7
                 }
             }
         }
+
         public static List<Student> ReadStudentsFile(string fileName)
         {
             List<Student> students = new List<Student>();
