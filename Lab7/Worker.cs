@@ -437,6 +437,18 @@ namespace Lab7
                     knownByAtLeastOne);
 
             PrintLanguages(
+                "Языки знает первый работник:", 
+                _employee1);
+
+            PrintLanguages(
+                "Языки знает второй работник:",
+                _employee2);
+
+            PrintLanguages(
+                "Языки знает третий работник:",
+                _employee3);
+
+            PrintLanguages(
                 "Знают все работники:",
                 knownByEveryone);
 

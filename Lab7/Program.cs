@@ -208,7 +208,7 @@ namespace Lab7
                         Console.WriteLine("Исходный список:");
                         Worker.PrintList(list2);
 
-                        var E = ReadInt("Введите E", true);
+                        var E = ReadInt("Введите E\n", true);
                         Worker.SwapNeighborsOfE(list2, E);
 
                         Console.WriteLine("После обработки:");
@@ -216,8 +216,6 @@ namespace Lab7
 
                         break;
                     case 8:
-                        
-
                         Worker.PrintHashSetAnswers();
 
                         break;
