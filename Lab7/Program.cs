@@ -137,8 +137,8 @@ namespace Lab7
                 Console.WriteLine("7. Если у элемента со значением E \"соседи\" не равны, поменять их местами");
                 Console.WriteLine("--- Задание 8");
                 Console.WriteLine("8. Задание с работниками фирмы");
-                Console.WriteLine("--- Задание 9");
-                Console.WriteLine("9. Задание со студентами");
+                Console.WriteLine("--- Задание 10");
+                Console.WriteLine("10. Задание со студентами");
                 Console.WriteLine("0. Выход");
 
                 var choice = ReadInt("Выбор: ", true);
@@ -219,7 +219,7 @@ namespace Lab7
                         Worker.PrintHashSetAnswers();
 
                         break;
-                    case 9:
+                    case 10:
                         Worker.GenerateStudentsFile(StudentsPath);
                         PrintFileStudents(StudentsPath);
 

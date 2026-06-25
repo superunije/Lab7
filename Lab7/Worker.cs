@@ -26,7 +26,7 @@ namespace Lab7
             {
                 for (int i = 0; i < count; i++)
                 {
-                    writer.WriteLine(Random.Shared.Next(-100, 101)); // числа от -100 до 100
+                    writer.WriteLine(Random.Shared.Next(-100, 101));
                 }
             }
             Console.WriteLine("Файл создан.");
